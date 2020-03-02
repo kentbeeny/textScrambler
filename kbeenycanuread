@@ -1,0 +1,91 @@
+#Kent Beeny
+#SDEV 265
+#Module01
+#Can you Read This (Create scrambled text that is readable)
+#v1.3
+#1/21/2020
+
+#Can you read this algorithm
+
+#REQUIREMENTS:
+#Select only words of 4 or more characters
+#Leave 2 and 3 letter words as is
+#Scramble (randomize) the letters between the first and last characters (the first and last letters stay the same.)
+#After the scramble, the resulting word cannot be the same word.
+
+
+import random
+import time
+
+# This function will pass test to the ProcessText function for testing
+def main():
+        text = "Some text to be altered. This should be all mixed up when complete."
+        print(text)
+        print(ProcessText(text))
+        time.sleep(5)
+
+
+def ProcessText(text):
+    #Split the text into a list of sentences at periods in the sentence
+    # Issue: What about  ! and ? ...
+    # Answer: The current version only works with periods. I need more time
+    # playing around with the regex split function to figure out how to utilize it properly.
+        workingText = text.split(".")
+        for i in range(0, len(workingText)):
+                workingText[i] = ProcessWords(workingText[i])
+        alteredText = str(" ".join(str(i) for i in workingText))
+        #Current version has an extra period at the end of the processing,
+        # for now we are stripping the extra character before returning.
+        alteredText = alteredText[:-1]
+        return alteredText                
+
+
+def ProcessWords(sentence):
+	#Split the sentence into a list of words at the space between words
+        workingSentence = sentence.split()
+        for i in range(0, len(workingSentence)):
+                workingSentence[i] = ProcessWord(workingSentence[i])
+        #Append a period to the end of each sentence.
+        workingSentence = (" ".join(workingSentence)) + "."
+        return workingSentence
+
+
+#This function will be used to scramble the letters in a word.
+def ProcessWord(word):
+        #If the length of the word is less than 4 characters,
+        # we will not modify the word.     
+        if len(word) < 4:
+                newWord = word
+        else:
+                #Save the word being processed in a temp variable.
+                originalWord = word
+
+                #Create a variable to hold the new word and set it to
+                # the original word for now.
+                newWord = word
+                
+                #Put the letters of the word into a list.
+                processWord = list(originalWord)
+              
+                #Variable to hold the first letter of the word.
+                firstLetter = processWord[0]
+              
+                #Variable to hold the last letter of the word.
+                lastLetter = processWord[-1]
+
+                #Create a list to hold the letters in the middle of the word
+                # by deleting the first and last item in the list.
+                midWord = processWord
+                del midWord[0]
+                del midWord[-1]
+              
+                #While the letters in the word are not in a new order,
+                # scramble the letters.
+                while originalWord == newWord:
+                        random.shuffle(midWord)
+                        newWord = str(firstLetter), "".join(midWord), str(lastLetter)
+                        newWord = "".join(newWord)
+        return newWord
+
+main()
+
